@@ -771,19 +771,20 @@ defmodule Keyword do
     iex> Keyword.bool [a: false], :b, true
     true
 
-    iex> Keyword.bool [a: true], :a, false
+    iex> Keyword.bool [a: false], :a, true
     false
 
-    iex> Keyword.bool [a: false], :a, :maybe
-    ** (TypeError) :maybe is not a boolean value
-
     iex> Keyword.bool [a: 1], :a, false
-    ** (TypeError) 1 is not a boolean value
+    ** (RuntimeError) 1 is not a boolean value
 
   """
-  @spec bool(t, key, boolean()) :: boolean
-  def bool(dict, key, default) do
-    default
+  @spec bool(t, key, boolean()) :: boolean()
+  def bool(dict, key, default) when is_boolean(default) do
+    value = get(dict, key, default)
+    case is_boolean(value) do
+      true -> value
+      false -> raise RuntimeError, message: "#{value} is not a boolean value"
+    end
   end
 
 end
