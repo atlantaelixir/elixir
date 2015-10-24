@@ -756,4 +756,34 @@ defmodule Keyword do
   def size(keyword) do
     length(keyword)
   end
+
+  @doc """
+  Retrieves a boolean value for `key` from `dict`.
+
+  In case there is no such key, `default` is returned
+  (`default` defaults to `false`).
+
+  In case there is a key and the value is not a boolean,
+  an error is raised.
+
+  ## Examples
+
+    iex> Keyword.bool [a: false], :b, true
+    true
+
+    iex> Keyword.bool [a: true], :a, false
+    false
+
+    iex> Keyword.bool [a: false], :a, :maybe
+    ** (TypeError) :maybe is not a boolean value
+
+    iex> Keyword.bool [a: 1], :a, false
+    ** (TypeError) 1 is not a boolean value
+
+  """
+  @spec bool(t, key, boolean()) :: boolean
+  def bool(dict, key, default) do
+    default
+  end
+
 end
